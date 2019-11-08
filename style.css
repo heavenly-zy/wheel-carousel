@@ -1,0 +1,65 @@
+.carousel {
+    margin: 30px auto;
+    max-width: 920px;
+    height: 400px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+}
+
+.carousel .panels {
+    position: relative;
+    height: 100%;
+}
+
+.carousel .panels>a {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel .panels>a:first-child {
+    z-index: 10;
+}
+
+.carousel .panels img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel .action {
+    display: flex;
+    font-size: 16px;
+    color: #999;
+    margin-top: 8px;
+}
+
+.carousel .action .pre {
+    order: 1;
+    cursor: pointer;
+}
+
+.carousel .action .next {
+    order: 3;
+    cursor: pointer;
+}
+
+.carousel .dots {
+    order: 2;
+    flex: 1;
+    text-align: center;
+}
+
+.carousel .dots>span {
+    display: inline-block;
+    width: 22px;
+    height: 8px;
+    border-radius: 2px;
+    background: #ddd;
+    cursor: pointer;
+}
+
+.carousel .dots>span.active {
+    width: 28px;
+    background: #aaa;
+}
