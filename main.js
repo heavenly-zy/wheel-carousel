@@ -53,9 +53,73 @@ class Carousel {
     }
 }
 
-function fade(fromNode, toNode, callback) {
+function fade(fromNode, toNode, onFinish) {
     console.log(fromNode, toNode)
-    callback()
+    let opacityOffset1 = 1
+    let opacityOffset2 = 0
+    let step = 0.04
+    fromNode.style.zIndex = 10
+    toNode.style.zIndex = 9
+
+    function fromNodeAnimation() {
+        if (opacityOffset1 > 0) {
+            opacityOffset1 -= step
+            fromNode.style.opacity = opacityOffset1
+            requestAnimationFrame(fromNodeAnimation)
+        } else {
+            fromNode.style.opacity = 0
+        }
+    }
+
+    function toNodeAnimation() {
+        if (opacityOffset2 < 1) {
+            opacityOffset2 += step
+            toNode.style.opacity = opacityOffset2
+            requestAnimationFrame(toNodeAnimation)
+        } else {
+            toNode.style.opacity = 1
+            onFinish()
+        }
+    }
+
+    fromNodeAnimation()
+    toNodeAnimation()
 }
 
-document.querySelectorAll('.carousel').forEach(x => { new Carousel(x, fade) })
+function slide(fromNode, toNode, onFinish) {
+    fromNode.style.zIndex = 10
+    toNode.style.zIndex = 10
+
+    let width = parseInt(getComputedStyle(fromNode).width)
+    let offsetX = width // 要水平移动的距离
+    let offset1 = 0 // 第一个元素已经移动的距离
+    let offset2 = 0 // 第二个元素已经移动的距离
+    let step = 15 // 每次移动的距离
+
+    toNode.style.left = width + 'px' // 把toNode放到fromNode的左边
+
+    function fromNodeAnimation() {
+        if (offset1 < offsetX) {
+            fromNode.style.left = parseInt(getComputedStyle(fromNode).left) - step + 'px'
+            offset1 += step
+            requestAnimationFrame(fromNodeAnimation)
+        }
+    }
+
+    function toNodeAnimation() {
+        if (offset2 < offsetX) {
+            toNode.style.left = parseInt(getComputedStyle(toNode).left) - step + 'px'
+            offset2 += step
+            requestAnimationFrame(toNodeAnimation)
+        } else {
+            onFinish()
+            fromNode.style.left = 0
+            toNode.style.left = 0
+        }
+    }
+
+    fromNodeAnimation()
+    toNodeAnimation()
+}
+
+document.querySelectorAll('.carousel').forEach(x => { new Carousel(x, slide) })
